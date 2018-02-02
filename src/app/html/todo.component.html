@@ -1,0 +1,37 @@
+<section class="todoapp">
+	<header class="header">
+		<h1>Todos</h1>
+		<input maxlength="100" placeholder="What needs to be done?" (keyup.enter)="addTask()" [(ngModel)]="newTask" name="task" class="new-todo"
+		/>
+	</header>
+	<section class="main">
+		<input class="toggle-all" id="toggle-all" type="checkbox" [ngModel]="!activeTasksCount" #val (click)="changeAllTasksStatus(val.checked)" *ngIf="activeTasksCount||completedTasksCount">
+		<ul class="todo-list">
+			<li class="" *ngFor="let item of todoList">
+				<div class="view" *ngIf="!item.isInEditMode">
+					<input class="toggle" type="checkbox" (click)="toggleTaskStatus(item)" [(ngModel)]="item.isCompleted">
+					<label (dblclick)="changeMode(item, true)" class="{{item.isCompleted ? 'task-completed':''}}">{{item.task}}</label>
+					<button class="destroy" (click)="deleteTask(item)"></button>
+				</div>
+				<input *ngIf="item.isInEditMode" class="edit" [(ngModel)]="item.task" (keyup.escape)="changeMode(item, false)" (blur)="changeMode(item, false)">
+			</li>
+		</ul>
+	</section>
+	<footer class="footer">
+		<span class="todo-count"><strong>{{activeTasksCount}}</strong> item(s) left</span>
+		<ul class="filters">
+			<li>
+				<a class="{{status == availableStatus.None?'selected':''}}" href="javascript:void(0);" (click)="filterByStatus(availableStatus.None)">All</a>
+			</li>
+			<li>
+				<a class="{{status == availableStatus.Active?'selected':''}}" href="javascript:void(0);" (click)="filterByStatus(availableStatus.Active)">Active</a>
+			</li>
+			<li>
+				<a class="{{status == availableStatus.Completed?'selected':''}}" href="javascript:void(0);" (click)="filterByStatus(availableStatus.Completed)">Completed</a>
+			</li>
+		</ul>
+		<div class="todo-clear-completed" *ngIf="completedTasksCount" (click)="deleteCompletedTasks()">Clear completed</div>
+	</footer>
+</section>
+
+<temp-comp></temp-comp>
